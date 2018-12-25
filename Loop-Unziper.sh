@@ -5,10 +5,12 @@ read input
 if [[ $input == "Y" || $input == "y" ]]; then
         echo "What is the file name?"
         read file
+#zipfile is the file that we inter for unziping
+#pw is the password choosen for the unziping
         zipfile="$file"
         pw=$(fcrackzip -u -l 1-6 -c '1' "$file"| sed -n -e 's/^.*pw == //p')
         unzip -P "$pw" "$file"
-
+#next_zipfile is the name of the file chosen for unziping 
         while fcrackzip -u -l 1-6 -c '1' "$zipfile"| sed -n -e 's/^.*pw == //p'; do
               pw2=$(fcrackzip -u -l 1-6 -c '1' "$zipfile"| sed -n -e 's/^.*pw == //p')
               next_zipfile="$(unzip -Z1 "$zipfile" | head -n1)"
@@ -34,7 +36,7 @@ else
         read file
         echo "insert the wordlist location"
         read location
-
+#location is for the wordlist name or location of it
         zipfile="$file"
         pw=$(fcrackzip -v -u -D -p "$location" "$file"| sed -n -e 's/^.*pw == //p')
         unzip -P "$pw" "$file"
